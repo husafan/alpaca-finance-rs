@@ -8,19 +8,19 @@ use tokio_tungstenite::tungstenite::protocol::Message;
 
 use crate::{ util, AccountStatus, Alpaca, Order };
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq)]
 pub enum AuthorizationStatus {
    #[serde(rename="authorized")] Authorized,
    #[serde(rename="unauthorized")] Unauthorized
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq)]
 pub enum AuthorizationAction {
    #[serde(rename="authenticate")] Authenticate,
    #[serde(rename="listen")] Listen
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Authorization {
    status: AuthorizationStatus,
    action: AuthorizationAction
@@ -28,7 +28,7 @@ pub struct Authorization {
 
 /// An update that has occurred due to an account change.
 /// NOTE - this is not well documented in Alpaca and the fields might be different...
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct AccountEvent {
    /// Account ID - a UUID
    pub id: String,
@@ -54,7 +54,7 @@ pub struct AccountEvent {
 
 
 /// An event that has occured due to an order.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "snake_case", tag = "event")]
 pub enum OrderEvent {
    /// Sent when the order has been completed for the day - it is either “filled” or “done_for_day” - but
@@ -118,20 +118,20 @@ pub enum OrderEvent {
    Suspended { order: Order },
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ListenStream {
    streams: Vec<String>
 }
 
 /// The possible actions we can push on to streams
-#[derive(Debug, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(content = "data", rename_all="snake_case", tag = "action")]
 enum ActionMessage {
    Listen(ListenStream),
 }
 
 /// The possible event streams that we can listen on
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 #[serde(content = "data", tag = "stream")]
 pub enum StreamMessage {
    /// This stream provides clients with updates pertaining to their brokerage accounts at Alpaca,

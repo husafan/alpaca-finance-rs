@@ -11,7 +11,7 @@ use crate::{ error, util, Alpaca, Result };
 /// may get in ACCOUNT_UPDATED when personal information is being updated from the dashboard,
 /// in which case you may not be allowed trading for a short period of time until the change
 /// is approved.
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AccountStatus {
    /// The account information is being updated.
@@ -48,7 +48,7 @@ pub enum AccountStatus {
 /// Also, in accordance with FINRA’s pattern day trading rule, an account may be flagged for
 /// pattern day trading (pattern_day_trader flag), which would inhibit an account from placing any
 /// further day-trades.
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Account {
    /// Account ID - a UUID
    pub id: String,
